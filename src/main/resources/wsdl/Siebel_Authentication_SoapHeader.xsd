@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns1="http://siebel.com/webservices"
+           targetNamespace="http://siebel.com/webservices"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+	<xs:element name="SessionType">
+		<xs:annotation>
+			<xs:documentation>See siebel Authentication for details</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:token">
+				<xs:enumeration value="None"/>
+				<xs:enumeration value="Stateless"/>
+				<xs:enumeration value="Stateful"/>
+				<xs:enumeration value="ServerDetermine"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="UsernameToken" type="xs:token">
+		<xs:annotation>
+			<xs:documentation>See siebel Authentication for details</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PasswordText" type="xs:token">
+		<xs:annotation>
+			<xs:documentation>See siebel Authentication for details</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SessionToken" type="xs:token">
+		<xs:annotation>
+			<xs:documentation>See siebel Authentication for details</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="SessionType">
+		<xs:simpleContent>
+			<xs:extension base="xs:token"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UsernameToken">
+		<xs:simpleContent>
+			<xs:extension base="xs:token"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="PasswordText">
+		<xs:simpleContent>
+			<xs:extension base="xs:token"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="SessionToken">
+		<xs:simpleContent>
+			<xs:extension base="xs:token"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="SiebelSoapHeaderType">
+		<xs:sequence>
+			<xs:element name="SessionType" minOccurs="0"/>
+			<xs:element name="UsernameToken" minOccurs="0"/>
+			<xs:element name="PasswordText" minOccurs="0"/>
+			<xs:element name="SessionToken" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SiebelAuthentication" type="ns1:SiebelSoapHeaderType"/>
+</xs:schema>

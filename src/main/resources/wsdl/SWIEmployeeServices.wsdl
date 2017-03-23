@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsdLocal1="http://www.siebel.com/xml/SWIEmployeeIO"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://siebel.com/asi/"
+             targetNamespace="http://siebel.com/asi/">
+
+	<import namespace="http://siebel.com/webservices" location="Siebel_Authentication_SoapHeader.xsd"/>
+
+	<types>
+		<xsd:schema elementFormDefault="qualified"
+		            attributeFormDefault="unqualified"
+		            xmlns:xsdLocal1="http://www.siebel.com/xml/SWIEmployeeIO"
+		            targetNamespace="http://www.siebel.com/xml/SWIEmployeeIO"
+		            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:annotation>
+				<xsd:documentation>Copyright (C) 2001-2004 Siebel Systems, Inc. All rights reserved. Siebel XSD Generation</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="ListOfSwiemployeeio" type="xsdLocal1:ListOfSwiemployeeio"/>
+			<xsd:complexType name="ListOfSwiemployeeioTopElmt">
+				<xsd:sequence>
+					<xsd:element name="ListOfSwiemployeeio" maxOccurs="1" minOccurs="1" type="xsdLocal1:ListOfSwiemployeeio"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfSwiemployeeio">
+				<xsd:sequence>
+					<xsd:element name="Employee" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee">
+				<xsd:sequence>
+					<xsd:element name="Alias" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeTypeCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalTitle" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PreferredCommunications" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="TimeZone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="UserType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PrimaryPositionId" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Created" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CreatedBy" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Updated" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="UpdatedBy" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ModId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CellPhone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EMailAddr" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmploymentStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Fax" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="FirstName" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobTitle" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LastName" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="LoginName" maxOccurs="1" minOccurs="1" type="xsd:string"/>
+					<xsd:element name="MiddleName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Phone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="RowId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SalesChannel" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ListOfEmployee_Position" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfEmployee_Position"/>
+					<xsd:element name="ListOfEmployee_Organization" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfEmployee_Organization"/>
+					<xsd:element name="ListOfEmployee_PersonalAddress" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfEmployee_PersonalAddress"/>
+					<xsd:element name="ListOfEmployee_Responsibility" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfEmployee_Responsibility"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+				<xsd:attribute name="searchspec" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfEmployee_Position">
+				<xsd:sequence>
+					<xsd:element name="Employee_Position" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee_Position"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee_Position">
+				<xsd:sequence>
+					<xsd:element name="Position" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Division" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfEmployee_Organization">
+				<xsd:sequence>
+					<xsd:element name="Employee_Organization" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee_Organization"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee_Organization">
+				<xsd:sequence>
+					<xsd:element name="Organization" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfEmployee_PersonalAddress">
+				<xsd:sequence>
+					<xsd:element name="Employee_PersonalAddress" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee_PersonalAddress"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee_PersonalAddress">
+				<xsd:sequence>
+					<xsd:element name="PersonalCity" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalCountry" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalCounty" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalPostalCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalProvince" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalState" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalStreetAddress" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalStreetAddress2" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalStreetAddress3" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+				<xsd:attribute name="operation" type="xsd:string"/>
+				<xsd:attribute name="searchspec" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfEmployee_Responsibility">
+				<xsd:sequence>
+					<xsd:element name="Employee_Responsibility" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee_Responsibility"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee_Responsibility">
+				<xsd:sequence>
+					<xsd:element name="Responsibility" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+				<xsd:attribute name="operation" type="xsd:string"/>
+				<xsd:attribute name="searchspec" type="xsd:string"/>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema elementFormDefault="qualified"
+		            attributeFormDefault="unqualified"
+		            targetNamespace="http://siebel.com/asi/"
+		            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.siebel.com/xml/SWIEmployeeIO"/>
+			<xsd:element name="SWIEmployeeServicesQueryPage_Input">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="PageSize" type="xsd:string"/>
+						<xsd:element ref="xsdLocal1:ListOfSwiemployeeio"/>
+						<xsd:element name="ViewMode" minOccurs="0" type="xsd:string"/>
+						<xsd:element name="StartRowNum" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SWIEmployeeServicesQueryPage_Output">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="LastPage" type="xsd:string"/>
+						<xsd:element ref="xsdLocal1:ListOfSwiemployeeio"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+
+	<message name="SWIEmployeeServicesQueryPage_Input">
+		<part name="SWIEmployeeServicesQueryPage_Input" element="tns:SWIEmployeeServicesQueryPage_Input"/>
+	</message>
+	<message name="SWIEmployeeServicesQueryPage_Output">
+		<part name="SWIEmployeeServicesQueryPage_Output" element="tns:SWIEmployeeServicesQueryPage_Output"/>
+	</message>
+
+	<portType name="SWI_spcEmployee_spcService">
+		<operation name="SWIEmployeeServicesQueryPage">
+			<input message="tns:SWIEmployeeServicesQueryPage_Input"/>
+			<output message="tns:SWIEmployeeServicesQueryPage_Output"/>
+		</operation>
+	</portType>
+
+	<binding name="SWI_spcEmployee_spcService" type="tns:SWI_spcEmployee_spcService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="SWIEmployeeServicesQueryPage">
+			<soap:operation soapAction="document/http://siebel.com/asi/:SWIEmployeeServicesQueryPage"/>
+			<input>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SOAPHeaders" part="SOAPHeaders" use="literal"/>
+				-->
+			</input>
+			<output>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SessionToken" part="SessionToken" use="literal"/>
+				-->
+			</output>
+		</operation>
+	</binding>
+
+	<service name="SWIEmployeeServices">
+		<port name="SWI_spcEmployee_spcService" binding="tns:SWI_spcEmployee_spcService"/>
+	</service>
+
+</definitions>

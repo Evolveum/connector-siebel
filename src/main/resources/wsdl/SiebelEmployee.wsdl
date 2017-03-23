@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsdLocal1="http://www.siebel.com/xml/Employee%20Interface"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://siebel.com/CustomUI"
+             targetNamespace="http://siebel.com/CustomUI">
+
+	<import namespace="http://siebel.com/webservices" location="Siebel_Authentication_SoapHeader.xsd"/>
+
+	<types>
+		<xsd:schema elementFormDefault="qualified"
+		            attributeFormDefault="unqualified"
+		            xmlns:xsdLocal1="http://www.siebel.com/xml/Employee%20Interface"
+		            targetNamespace="http://www.siebel.com/xml/Employee%20Interface"
+		            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:annotation>
+				<xsd:documentation>Copyright (C) 2001-2004 Siebel Systems, Inc. All rights reserved. Siebel XSD Generation</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="ListOfEmployeeInterface" type="xsdLocal1:ListOfEmployeeInterface"/>
+			<xsd:complexType name="ListOfEmployeeInterfaceTopElmt">
+				<xsd:sequence>
+					<xsd:element name="ListOfEmployeeInterface" maxOccurs="1" minOccurs="1" type="xsdLocal1:ListOfEmployeeInterface"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfEmployeeInterface">
+				<xsd:sequence>
+					<xsd:element name="Employee" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:Employee"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Employee">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Alias" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="AvailabilityStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="AvailabilityStatusUntil" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="BuildingNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CPRegion" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CPRegionId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CPRegionIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CellPhone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CostCurrencyCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CostPerHour" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CubicleNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EMailAddr" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmergencyNotification" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Emp" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeTypeCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmploymentStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EndShiftto" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Fax" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="FirstName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="HireDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="HomePhone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobCodeId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobCodeIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobCodeName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="JobTitle" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LastName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LastPromotionDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LicensePlateNumber" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LoginDomain" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LoginName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="MF" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="MaidenName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="MiddleName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="NextAnnualReviewDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="NextAvailabilityStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="NickName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="OvertimeCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PagerPIN" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PagerPhone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PagerType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalTitle" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Phone" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PreferredCommunications" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Private" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Readiness" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SeniorityDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ShareAddressFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ShareHomePhoneFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ShiftId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ShiftIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ShiftName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="StandardNotification" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="StartShiftFrom" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SubcontractorFlag" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="TerminationDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="TimeZoneId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="TimeZoneName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SalesChannel" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="UserType" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ListOfRelatedPosition" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfRelatedPosition"/>
+					<xsd:element name="ListOfRelatedEmployeeOrganization" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfRelatedEmployeeOrganization"/>
+					<xsd:element name="ListOfCmsCertificationsQualifications" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfCmsCertificationsQualifications"/>
+					<xsd:element name="ListOfCmsEducation" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfCmsEducation"/>
+					<xsd:element name="ListOfCmsHonorsAwards" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfCmsHonorsAwards"/>
+					<xsd:element name="ListOfPersonalAddress" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfPersonalAddress"/>
+					<xsd:element name="ListOfRelatedResponsibility" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfRelatedResponsibility"/>
+					<xsd:element name="ListOfCmsMemberships" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfCmsMemberships"/>
+					<xsd:element name="ListOfCmsPastWorkExperience" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfCmsPastWorkExperience"/>
+					<xsd:element name="ListOfRelatedSubcontractor" maxOccurs="1" minOccurs="0" type="xsdLocal1:ListOfRelatedSubcontractor"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfRelatedPosition">
+				<xsd:sequence>
+					<xsd:element name="RelatedPosition" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:RelatedPosition"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RelatedPosition">
+				<xsd:sequence>
+					<xsd:element name="Division" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DivisionId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DivisionIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeEndDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeStartDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Position" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PositionId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PositionIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfRelatedEmployeeOrganization">
+				<xsd:sequence>
+					<xsd:element name="RelatedEmployeeOrganization" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:RelatedEmployeeOrganization"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RelatedEmployeeOrganization">
+				<xsd:sequence>
+					<xsd:element name="EmployeeOrganization" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeOrganizationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EmployeeOrganizationIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfCmsCertificationsQualifications">
+				<xsd:sequence>
+					<xsd:element name="CmsCertificationsQualifications" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:CmsCertificationsQualifications"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CmsCertificationsQualifications">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Certification" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Comments" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="DateofCertification" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Institution" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfCmsEducation">
+				<xsd:sequence>
+					<xsd:element name="CmsEducation" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:CmsEducation"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CmsEducation">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Comments" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Country" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Degree" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Education" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Grade" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="GraduationDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Institution" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Major" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="NumberofYears" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Scale" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="TypeofEducation" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfCmsHonorsAwards">
+				<xsd:sequence>
+					<xsd:element name="CmsHonorsAwards" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:CmsHonorsAwards"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CmsHonorsAwards">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Comments" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="HonorAward" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Institution" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ReceivedDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="RelevancetoCompany" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfPersonalAddress">
+				<xsd:sequence>
+					<xsd:element name="PersonalAddress" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:PersonalAddress"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="PersonalAddress">
+				<xsd:sequence>
+					<xsd:element name="PersonalAddressId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalAddressIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalCity" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalCountry" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalCounty" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalPostalCode" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalProvince" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalState" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalStreetAddress" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="PersonalStreetAddress2" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfRelatedResponsibility">
+				<xsd:sequence>
+					<xsd:element name="RelatedResponsibility" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:RelatedResponsibility"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RelatedResponsibility">
+				<xsd:sequence>
+					<xsd:element name="Responsibility" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ResponsibilityId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ResponsibilityIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfCmsMemberships">
+				<xsd:sequence>
+					<xsd:element name="CmsMemberships" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:CmsMemberships"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CmsMemberships">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="ActiveStatus" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Comments" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EndDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Institution" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Membership" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="RelevancetoCompany" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="StartDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfCmsPastWorkExperience">
+				<xsd:sequence>
+					<xsd:element name="CmsPastWorkExperience" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:CmsPastWorkExperience"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CmsPastWorkExperience">
+				<xsd:sequence>
+					<xsd:element name="Id" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="BusinessTitle" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="BusinessUnit" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Comments" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="CompanyName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="EndDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="FirstName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Industry" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="IntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="LastName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="Position" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="StartDate" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="operation" type="xsd:string"/>
+			</xsd:complexType>
+			<xsd:complexType name="ListOfRelatedSubcontractor">
+				<xsd:sequence>
+					<xsd:element name="RelatedSubcontractor" maxOccurs="unbounded" minOccurs="0" type="xsdLocal1:RelatedSubcontractor"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RelatedSubcontractor">
+				<xsd:sequence>
+					<xsd:element name="SubcontractorAccountId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SubcontractorIntegrationId" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+					<xsd:element name="SubcontractorName" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="IsPrimaryMVG" type="xsd:string"/>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema elementFormDefault="qualified"
+		            attributeFormDefault="unqualified"
+		            targetNamespace="http://siebel.com/CustomUI"
+		            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.siebel.com/xml/Employee%20Interface"/>
+			<xsd:element name="SiebelEmployeeUpdate_1_Input">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="xsdLocal1:ListOfEmployeeInterface"/>
+						<xsd:element name="StatusObject" minOccurs="0" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SiebelEmployeeUpdate_1_Output">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="xsdLocal1:ListOfEmployeeInterface"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SiebelEmployeeInsert_1_Input">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="xsdLocal1:ListOfEmployeeInterface"/>
+						<xsd:element name="StatusObject" minOccurs="0" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SiebelEmployeeInsert_1_Output">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="xsdLocal1:ListOfEmployeeInterface"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+
+	<message name="SiebelEmployeeUpdate_1_Input">
+		<part name="SiebelEmployeeUpdate_1_Input" element="tns:SiebelEmployeeUpdate_1_Input"/>
+	</message>
+	<message name="SiebelEmployeeUpdate_1_Output">
+		<part name="SiebelEmployeeUpdate_1_Output" element="tns:SiebelEmployeeUpdate_1_Output"/>
+	</message>
+	<message name="SiebelEmployeeInsert_1_Input">
+		<part name="SiebelEmployeeInsert_1_Input" element="tns:SiebelEmployeeInsert_1_Input"/>
+	</message>
+	<message name="SiebelEmployeeInsert_1_Output">
+		<part name="SiebelEmployeeInsert_1_Output" element="tns:SiebelEmployeeInsert_1_Output"/>
+	</message>
+
+	<portType name="Siebel_spcEmployee">
+		<operation name="SiebelEmployeeUpdate_1">
+			<input message="tns:SiebelEmployeeUpdate_1_Input"/>
+			<output message="tns:SiebelEmployeeUpdate_1_Output"/>
+		</operation>
+		<operation name="SiebelEmployeeInsert_1">
+			<input message="tns:SiebelEmployeeInsert_1_Input"/>
+			<output message="tns:SiebelEmployeeInsert_1_Output"/>
+		</operation>
+	</portType>
+
+	<binding name="Siebel_spcEmployee" type="tns:Siebel_spcEmployee">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="SiebelEmployeeUpdate_1">
+			<soap:operation soapAction="document/http://siebel.com/CustomUI:SiebelEmployeeUpdate_1"/>
+			<input>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SOAPHeaders" part="SOAPHeaders" use="literal"/>
+				-->
+			</input>
+			<output>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SessionToken" part="SessionToken" use="literal"/>
+				-->
+			</output>
+		</operation>
+		<operation name="SiebelEmployeeInsert_1">
+			<soap:operation soapAction="document/http://siebel.com/CustomUI:SiebelEmployeeInsert_1"/>
+			<input>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SOAPHeaders" part="SOAPHeaders" use="literal"/>
+				-->
+			</input>
+			<output>
+				<soap:body use="literal" namespace="http://siebel.com/CustomUI"/>
+				<!--
+				<soap:header message="SessionToken" part="SessionToken" use="literal"/>
+				-->
+			</output>
+		</operation>
+	</binding>
+
+	<service name="Siebel_spcEmployee">
+		<port name="Siebel_spcEmployee" binding="tns:Siebel_spcEmployee"/>
+	</service>
+
+</definitions>

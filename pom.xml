@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.evolveum.polygon</groupId>
+		<artifactId>connector-parent</artifactId>
+		<version>1.4.2.14</version>
+	</parent>
+
+	<groupId>com.evolveum.polygon.connector</groupId>
+	<artifactId>connector-siebel</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>Siebel Connector</name>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Marián Petráš</name>
+			<email>marian.petras@centrum.cz</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Prague</timezone>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/Evolveum/connector-siebel.git</connection>
+		<developerConnection>scm:git:https://github.com/Evolveum/connector-siebel.git</developerConnection>
+		<url>https://github.com/Evolveum/connector-siebel</url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<connectorPackage>com.evolveum.polygon.connector.siebel</connectorPackage>
+		<connectorClass>SiebelConnector</connectorClass>
+
+		<framework.compatibilityVersion>1.4</framework.compatibilityVersion>
+		<framework.releaseVersion>1.0</framework.releaseVersion>
+
+		<!--
+			Properties needed for running unit tests.
+			Override the values in settings.xml or on the command-line.
+		-->
+		<!-- URL of the web service -->
+		<evolveum.connector.siebel.testWsUrl></evolveum.connector.siebel.testWsUrl>
+		<evolveum.connector.siebel.testUsername></evolveum.connector.siebel.testUsername>
+		<evolveum.connector.siebel.testPassword></evolveum.connector.siebel.testPassword>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>evolveum-nexus-releases</id>
+			<name>Internal Releases</name>
+			<url>http://nexus.evolveum.com/nexus/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>evolveum-nexus-snapshots</id>
+			<name>Internal Releases</name>
+			<url>http://nexus.evolveum.com/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+
+	<build>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<systemPropertyVariables>
+							<wsUrl>${evolveum.connector.siebel.testWsUrl}</wsUrl>
+							<username>${evolveum.connector.siebel.testUsername}</username>
+							<password>${evolveum.connector.siebel.testPassword}</password>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>3.1.8</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+						<configuration>
+							<wsdlOptions>
+								<wsdlOption>
+									<extendedSoapHeaders>true</extendedSoapHeaders>
+									<autoNameResolution>true</autoNameResolution>
+									<wsdl>${basedir}/src/main/resources/wsdl/SWIEmployeeServices.wsdl</wsdl>
+									<wsdlLocation>classpath:wsdl/SWIEmployeeServices.wsdl</wsdlLocation>
+								</wsdlOption>
+								<wsdlOption>
+									<extendedSoapHeaders>true</extendedSoapHeaders>
+									<autoNameResolution>true</autoNameResolution>
+									<wsdl>${basedir}/src/main/resources/wsdl/SiebelEmployee.wsdl</wsdl>
+									<wsdlLocation>classpath:wsdl/SiebelEmployee.wsdl</wsdlLocation>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>6.8.8</version>    <!-- required by ConnectionID framework 1.4.2.14 -->
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>3.1.6</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-hc</artifactId>
+			<version>3.1.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
