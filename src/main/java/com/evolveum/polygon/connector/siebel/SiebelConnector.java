@@ -143,6 +143,8 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 
 	private static final Set<AttributeInfo.Flags> F_MULTIVALUED = of(MULTIVALUED);
 
+	private static final Set<AttributeInfo.Flags> F_MULTIVALUED_READONLY = of(MULTIVALUED, NOT_UPDATEABLE);
+
 	private static final SearchResult ALL_RESULTS_RETURNED = new SearchResult();
 
 	/**
@@ -232,10 +234,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 
 	static {
 		try {
-			POSITIONS = new PrimarySecondaryEmployeeAttribute<>(EmployeePosition.class,
-			                                                    RelatedPosition.class,
-			                                                    ATTR_PRIMARY_POSITION,
-			                                                    ATTR_SECONDARY_POSITIONS);
+			POSITIONS = new PrimarySecondaryPosition();
 			ORGANIZATIONS = new PrimarySecondaryEmployeeAttribute<>(EmployeeOrganization.class,
 			                                                        RelatedEmployeeOrganization.class,
 			                                                        ATTR_PRIMARY_ORGANIZATION,
@@ -456,7 +455,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PHONE,              String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SALES_CHANNEL,      String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_POSITION,    String.class));
-		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_POSITIONS, String.class, F_MULTIVALUED));
+		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_POSITIONS, String.class, F_MULTIVALUED_READONLY));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_ORGANIZATION,    String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_ORGANIZATIONS, String.class, F_MULTIVALUED));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_RESPONSIBILITY,     String.class));
@@ -1181,7 +1180,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	 *            ({@code RelatedPosition}, {@code RelatedEmployeeOrganization},
 	 *            {@code RelatedResponsibility})
 	 */
-	private static final class PrimarySecondaryEmployeeAttribute<P, Q> {
+	private static class PrimarySecondaryEmployeeAttribute<P, Q> {
 
 		/* --------- reading from Siebel --------- */
 
@@ -1291,7 +1290,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 					for (P empProp : employeeProps) {
 						final String prop = (String) methodGetProp.invoke(empProp);    // String position = EmployeePosition.getPosition();
 						if (isYes((String) methodIsPrimary.invoke(empProp))) {         // if (isYes(employeePosition.getIsPrimaryMVG())) ...
-							objBuilder.addAttribute(connObjAttrPrimary, prop);
+							setConnObjPrimaryAttrValue(objBuilder, connObjAttrPrimary, prop);
 						} else {
 							secondaryProps.add(prop);
 						}
@@ -1299,6 +1298,12 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 					objBuilder.addAttribute(connObjAttrSecondary, secondaryProps);
 				}
 			}
+		}
+
+		void setConnObjPrimaryAttrValue(final ConnectorObjectBuilder objBuilder,
+		                                final String attrName,
+		                                final String attrValue) {
+			objBuilder.addAttribute(attrName, attrValue);
 		}
 
 		void fillEmployeeProperties(final PrimarySecondaryEmployeeAttrValue primarySecondary,
@@ -1333,8 +1338,8 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 			methodSetRelatedListObj.invoke(employee, listObj);                    // employee.setListOfRelatedPosition(listObj);
 		}
 
-		private Q createRelatedItem(final String connObjAttrValue,                          // RelatedPosition createPosition(...)
-		                            final boolean isPrimary) throws ReflectiveOperationException {
+		Q createRelatedItem(final String connObjAttrValue,                                  // RelatedPosition createPosition(...)
+		                    final boolean isPrimary) throws ReflectiveOperationException {
 			final Q relatedItem = clsWriteProperty.newInstance();                           //     RelatedPosition position = new RelatedPosition();
 			methodSetRelatedAttr.invoke(relatedItem, connObjAttrValue);                     //     position.setPosition(value);
 			methodSetRelatedAttrPrimOrSec.invoke(relatedItem, booleanAsString(isPrimary));  //     position.setIsPrimaryMVG(booleanAsString(primary));
@@ -1345,8 +1350,62 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 			return RESOURCE_PROP_VALUE_YES.equals(str);
 		}
 
-		private static String booleanAsString(final boolean value) {
+		static String booleanAsString(final boolean value) {
 			return value ? RESOURCE_PROP_VALUE_YES : RESOURCE_PROP_VALUE_NO;
+		}
+
+	}
+
+	/**
+	 * Special helper class for attributes <em>primary position</em>
+	 * and <em>secondary position</em>.
+	 */
+	private static final class PrimarySecondaryPosition
+			extends PrimarySecondaryEmployeeAttribute<EmployeePosition, RelatedPosition> {
+
+		public PrimarySecondaryPosition() throws NoSuchMethodException, ClassNotFoundException {
+			super(EmployeePosition.class,
+			      RelatedPosition.class,
+			      ATTR_PRIMARY_POSITION,
+			      ATTR_SECONDARY_POSITIONS);
+		}
+
+		@Override
+		void fillConnObjAttributes(final Employee employee,
+		                           final ConnectorObjectBuilder objBuilder) {
+
+			/* Value of attribute "PrimaryPosition" is not set here... */
+			super.fillConnObjAttributes(employee, objBuilder);
+
+			/* ... but here: */
+			final String primaryPositionId = employee.getPrimaryPositionId();
+			if (isNotEmpty(primaryPositionId)) {
+				objBuilder.addAttribute(ATTR_PRIMARY_POSITION, primaryPositionId);
+			}
+		}
+
+		@Override
+		void setConnObjPrimaryAttrValue(final ConnectorObjectBuilder objBuilder,
+		                                final String attrName,
+		                                final String attrValue) {
+			/*
+			 * This method is a no-op. The value of the connection object's
+			 * attribute "PrimaryPosition" is set by method
+			 * fillConnObjAttributes(...) - see above.
+			 */
+		}
+
+		@Override
+		RelatedPosition createRelatedItem(final String connObjAttrValue,
+		                                  final boolean isPrimary) throws ReflectiveOperationException {
+			final RelatedPosition position = new RelatedPosition();
+			if (isPrimary) {
+				position.setPositionId(connObjAttrValue);
+			} else {
+				position.setPosition(connObjAttrValue);
+			}
+			position.setIsPrimaryMVG(booleanAsString(isPrimary));
+			return position;
 		}
 
 	}
