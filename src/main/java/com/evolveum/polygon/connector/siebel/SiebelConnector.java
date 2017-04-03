@@ -1,7 +1,10 @@
 package com.evolveum.polygon.connector.siebel;
 
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -15,6 +18,7 @@ import javax.xml.ws.soap.SOAPFaultException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -109,6 +113,10 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	private static final String RESOURCE_PROP_VALUE_YES = "Y";
 
 	private static final String RESOURCE_PROP_VALUE_NO  = "N";
+
+	private static final String REQUEST_LOG_FILENAME = "siebel-soap-request.xml";
+
+	private static final String RESPONSE_LOG_FILENAME = "siebel-soap-response.xml";
 
 	/**
 	 * account Id used when testing the connection
@@ -322,14 +330,22 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 
 	private <S> S createService(final Class<S> seiClass) {
 		final ClientProxyFactoryBean factory = new JaxWsProxyFactoryBean();   // a new instance must be used for each service
-		/*
-		// Uncomment this to enable SOAP request & response logging into external files.
-		
-		factory.getFeatures().add(new org.apache.cxf.feature.LoggingFeature("file:~/siebel-soap-response.xml",
-		                                                                    "file:~/siebel-soap-request.xml",
-		                                                                    100_000,
-		                                                                    true));
-		*/
+
+		final Path soapLogTargetPath = configuration.getSoapLogTargetPath();
+		if (soapLogTargetPath != null) {
+			try {
+				final Path targetForRequests  = soapLogTargetPath.resolve(REQUEST_LOG_FILENAME);
+				final Path targetForResponses = soapLogTargetPath.resolve(RESPONSE_LOG_FILENAME);
+				final URL targetPathURLForRequests  = targetForRequests .toUri().toURL();
+				final URL targetPathURLForResponses = targetForResponses.toUri().toURL();
+				factory.getFeatures().add(new LoggingFeature(targetPathURLForResponses.toString(),
+															 targetPathURLForRequests.toString(),
+															 100_000,
+															 true));
+			} catch (MalformedURLException ex) {
+				LOG.warn(ex, "Couldn't initialize logging of SOAP messages.");
+			}
+		}
 		factory.setAddress (configuration.getWsUrl());
 		factory.setUsername(configuration.getUsername());
 		factory.setPassword(configuration.getPassword());

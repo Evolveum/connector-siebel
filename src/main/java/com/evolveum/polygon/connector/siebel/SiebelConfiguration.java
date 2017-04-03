@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 import org.identityconnectors.common.logging.Log;
@@ -14,6 +17,8 @@ import org.identityconnectors.framework.spi.StatefulConfiguration;
 
 import com.evolveum.polygon.connector.siebel.util.Pair;
 
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.isDirectory;
 import static org.identityconnectors.common.StringUtil.isEmpty;
 
 
@@ -38,6 +43,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
     private int    maxPageSize = DEFAULT_MAX_PAGE_SIZE;
     private int    connectTimeout = 30_000;    //milliseconds
     private int    receiveTimeout = 60_000;    //milliseconds
+    private String soapLogBasedirStr;
+    private Path   soapLogBasedir;
 
 
     @ConfigurationProperty(order = 1,
@@ -161,6 +168,22 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 		this.receiveTimeout = receiveTimeout;
 	}
 
+	@ConfigurationProperty(order = 7,
+	                       displayMessageKey = "soapLogBasedir.display",
+	                       groupMessageKey = "basic.group",
+	                       helpMessageKey = "soapLogBasedir.help")
+	public String getSoapLogBasedir() {
+		return soapLogBasedirStr;
+	}
+
+	public void setSoapLogBasedir(final String soapLogBasedir) {
+		soapLogBasedirStr = trimToNull(soapLogBasedir);
+	}
+
+	Path getSoapLogTargetPath() {
+		return soapLogBasedir;
+	}
+
 	@Override
 	public void release() {
 		wsUrlString = null;
@@ -203,6 +226,28 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 		if (receiveTimeout < 0) {
 			throw new ConfigurationException("The receive timeout must be positive.");
 		}
+
+		if (soapLogBasedirStr == null) {
+			soapLogBasedir = null;
+		} else {
+			try {
+				soapLogBasedir = Paths.get(soapLogBasedirStr);
+			} catch (InvalidPathException ex) {
+				throw new ConfigurationException("The SOAP log basedir is not a valid path.");
+			}
+			soapLogBasedirStr = soapLogBasedir.toString();
+
+			if (!soapLogBasedir.isAbsolute()) {
+				throw new ConfigurationException("The SOAP log basedir must be an absolute path.");
+			}
+
+			if (!isDirectory(soapLogBasedir)) {
+				if (exists(soapLogBasedir)) {
+					throw new ConfigurationException("File \"" + soapLogBasedirStr + "\" already exists and it isn't a directory.");
+				}
+				throw new ConfigurationException("Directory \"" + soapLogBasedirStr + "\" doesn't exist.");
+			}
+		}
     }
 
 	private static boolean isSupportedProtocol(String protocol) {
@@ -217,6 +262,17 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
 	private static String trim(final String str) {
 		return (str != null) ? str.trim() : null;
+	}
+
+	private static String trimToNull(final String str) {
+		final String result;
+		if (str == null) {
+			result = null;
+		} else {
+			String trimmed = str.trim();
+			result = trimmed.isEmpty() ? null : trimmed;
+		}
+		return result;
 	}
 
 }
