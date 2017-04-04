@@ -926,6 +926,8 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	 */
 	private Set<String> findMissingUpdateAttributes(final Collection<Attribute> presentAttributes) {
 		final Set<String> result = new HashSet<>();
+		final PrimaryXorSecondary positions = new PrimaryXorSecondary(ATTR_PRIMARY_POSITION,
+		                                                              ATTR_SECONDARY_POSITIONS);
 		final PrimaryXorSecondary organizations = new PrimaryXorSecondary(ATTR_PRIMARY_ORGANIZATION,
 		                                                                  ATTR_SECONDARY_ORGANIZATIONS);
 		final PrimaryXorSecondary responsibilities = new PrimaryXorSecondary(ATTR_PRIMARY_RESPONSIBILITY,
@@ -933,6 +935,10 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		for (Attribute attribute : presentAttributes) {
 			final String attrName = attribute.getName();
 			switch (attrName) {
+				case ATTR_PRIMARY_POSITION:
+				case ATTR_SECONDARY_POSITIONS:
+					positions.markPresent(attrName);
+					break;
 				case ATTR_PRIMARY_ORGANIZATION:
 				case ATTR_SECONDARY_ORGANIZATIONS:
 					organizations.markPresent(attrName);
@@ -943,6 +949,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 					break;
 			}
 		}
+		result.add(positions.getMissing());          //may be null
 		result.add(organizations.getMissing());      //may be null
 		result.add(responsibilities.getMissing());   //may be null
 		result.remove(null);
