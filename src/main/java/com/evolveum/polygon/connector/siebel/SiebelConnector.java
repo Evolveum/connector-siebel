@@ -151,6 +151,8 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 
 	private static final Set<AttributeInfo.Flags> F_MULTIVALUED = of(MULTIVALUED);
 
+	private static final Set<AttributeInfo.Flags> F_MULTIVALUED_READONLY = of(MULTIVALUED, NOT_UPDATEABLE);
+
 	private static final SearchResult ALL_RESULTS_RETURNED = new SearchResult();
 
 	/**
@@ -243,7 +245,8 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 			POSITIONS = new PrimarySecondaryEmployeeAttribute<>(EmployeePosition.class,
 			                                                    RelatedPosition.class,
 			                                                    ATTR_PRIMARY_POSITION,
-			                                                    ATTR_SECONDARY_POSITIONS);
+			                                                    ATTR_SECONDARY_POSITIONS,
+			                                                    "PositionId");
 			ORGANIZATIONS = new PrimarySecondaryEmployeeAttribute<>(EmployeeOrganization.class,
 			                                                        RelatedEmployeeOrganization.class,
 			                                                        ATTR_PRIMARY_ORGANIZATION,
@@ -472,7 +475,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PHONE,              String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SALES_CHANNEL,      String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_POSITION,    String.class));
-		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_POSITIONS, String.class, F_MULTIVALUED));
+		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_POSITIONS, String.class, F_MULTIVALUED_READONLY));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_ORGANIZATION,    String.class));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_SECONDARY_ORGANIZATIONS, String.class, F_MULTIVALUED));
 		builder.addAttributeInfo(AttributeInfoBuilder.build(ATTR_PRIMARY_RESPONSIBILITY,     String.class));
@@ -1227,6 +1230,18 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		                                          final Class<Q> writePropertyClass,
 		                                          final String connObjAttrPrimary,
 		                                          final String connObjAttrSecondary) throws NoSuchMethodException, ClassNotFoundException {
+			this(readPropertyClass,
+			     writePropertyClass,
+			     connObjAttrPrimary,
+			     connObjAttrSecondary,
+			     null);
+		}
+
+		private PrimarySecondaryEmployeeAttribute(final Class<P> readPropertyClass,
+		                                          final Class<Q> writePropertyClass,
+		                                          final String connObjAttrPrimary,
+		                                          final String connObjAttrSecondary,
+		                                          final String resourceAttrNameOverride) throws NoSuchMethodException, ClassNotFoundException {
 			/* --------- reading from Siebel --------- */
 			{
 				final String propertyClassName = readPropertyClass.getSimpleName();         //"EmployeePosition", "EmployeeOrganization", "EmployeeResponsibility"
@@ -1234,7 +1249,9 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 				final String getListMethodName = "get" + propertyClassName;                 //"getEmployeePosition", ...
 
 				assert propertyClassName.startsWith(CLASSNAME_PREFIX_READING);
-				final String resourceAttrName = propertyClassName.substring(CLASSNAME_PREFIX_READING.length());  //"Position", "Organization", "Responsibility"
+				final String resourceAttrName = (resourceAttrNameOverride == null)
+						? propertyClassName.substring(CLASSNAME_PREFIX_READING.length())  //"Position", "Organization", "Responsibility"
+						: resourceAttrNameOverride;
 				final String getPropMethodName = "get" + resourceAttrName;   //"getPosition", "getOrganization", "getResponsibility"
 				final String isPrimaryMethodName = "getIsPrimaryMVG";
 
@@ -1255,7 +1272,9 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 				final String setListObjMethodName = "setListOf" + propertyClassName;  //"setListOfRelatedPosition", ...
 
 				assert propertyClassName.startsWith(CLASSNAME_PREFIX_WRITING);
-				final String resourceAttrName = propertyClassName.substring(CLASSNAME_PREFIX_WRITING.length());  //"Position", "EmployeeOrganization", "Responsibility"
+				final String resourceAttrName = (resourceAttrNameOverride == null)
+						? propertyClassName.substring(CLASSNAME_PREFIX_WRITING.length())  //"Position", "EmployeeOrganization", "Responsibility"
+						: resourceAttrNameOverride;
 				final String setPropMethodName = "set" + resourceAttrName;    //"setPosition", "setEmployeeOrganization", "setResponsibility"
 				final String setIsPrimaryMethodName = "setIsPrimaryMVG";
 
