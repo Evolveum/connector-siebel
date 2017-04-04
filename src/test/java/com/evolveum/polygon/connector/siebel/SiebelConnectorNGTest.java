@@ -173,8 +173,8 @@ public class SiebelConnectorNGTest {
 
 		Employee employee = queryService.addEmployee("41", "XTOMHOLO");
 		addEmployeePosition(employee, "CEO");
-		addEmployeePosition(employee, "cook", true);
-		addEmployeePosition(employee, "plumber");
+		addEmployeePosition(employee, "COK", true);
+		addEmployeePosition(employee, "PLM");
 
 		queryService.addEmployee("55", "BLBLBLBL");
 		connector.init(queryService);
@@ -192,12 +192,12 @@ public class SiebelConnectorNGTest {
 
 		final Attribute attrPrimaryPos = returnedObject.getAttributeByName(SiebelConnector.ATTR_PRIMARY_POSITION);
 
-		assertEquals(getStringValue(attrPrimaryPos), "cook");
+		assertEquals(getStringValue(attrPrimaryPos), "COK");
 
 		final Attribute attrSecondaryPos = returnedObject.getAttributeByName(SiebelConnector.ATTR_SECONDARY_POSITIONS);
 		final Collection<?> secondaryPositions = newSet(attrSecondaryPos.getValue());
 
-		assertEquals(secondaryPositions, newSet("CEO", "plumber"));
+		assertEquals(secondaryPositions, newSet("CEO", "PLM"));
 	}
 
 	@Test
@@ -809,7 +809,7 @@ public class SiebelConnectorNGTest {
 		builder.setAttribute(ATTR_LAST_NAME, "Bell");
 		builder.setAttribute(ATTR_PHONE, "+38 123 454 321");
 		builder.setAttribute(ATTR_SALES_CHANNEL, "SkyNews");
-		builder.setAttribute(ATTR_PRIMARY_POSITION, "the boss");
+		builder.setAttribute(ATTR_PRIMARY_POSITION, "BB1");
 		builder.setAttribute(ATTR_SECONDARY_POSITIONS, "no", "other", "positions");
 		builder.setAttribute(ATTR_PRIMARY_ORGANIZATION, "Bell's labs");
 		builder.setAttribute(ATTR_SECONDARY_ORGANIZATIONS, "I live", "at Bell's labs");
@@ -849,16 +849,16 @@ public class SiebelConnectorNGTest {
 			RelatedPosition position;
 			final Iterator<RelatedPosition> iterator = positions.iterator();
 			position = iterator.next();
-			assertEquals(position.getPosition(), "the boss");
+			assertEquals(position.getPositionId(), "BB1");
 			assertEquals(position.getIsPrimaryMVG(), "Y");
 			position = iterator.next();
-			assertEquals(position.getPosition(), "no");
+			assertEquals(position.getPositionId(), "no");
 			assertEquals(position.getIsPrimaryMVG(), "N");
 			position = iterator.next();
-			assertEquals(position.getPosition(), "other");
+			assertEquals(position.getPositionId(), "other");
 			assertEquals(position.getIsPrimaryMVG(), "N");
 			position = iterator.next();
-			assertEquals(position.getPosition(), "positions");
+			assertEquals(position.getPositionId(), "positions");
 			assertEquals(position.getIsPrimaryMVG(), "N");
 		}
 
@@ -1057,12 +1057,12 @@ public class SiebelConnectorNGTest {
 	}
 
 	private static void addEmployeePosition(final Employee employee,
-	                                        final String positionName) {
-		addEmployeePosition(employee, positionName, false);
+	                                        final String positionId) {
+		addEmployeePosition(employee, positionId, false);
 	}
 
 	private static void addEmployeePosition(final Employee employee,
-	                                        final String positionName,
+	                                        final String positionId,
 	                                        final boolean primary) {
 		ListOfEmployeePosition listOfEmployeePosition = employee.getListOfEmployeePosition();
 		if (listOfEmployeePosition == null) {
@@ -1070,7 +1070,7 @@ public class SiebelConnectorNGTest {
 		}
 
 		final EmployeePosition position = new EmployeePosition();
-		position.setPosition(positionName);
+		position.setPositionId(positionId);
 		position.setIsPrimaryMVG(primary ? "Y" : "N");
 
 		listOfEmployeePosition.getEmployeePosition().add(position);
