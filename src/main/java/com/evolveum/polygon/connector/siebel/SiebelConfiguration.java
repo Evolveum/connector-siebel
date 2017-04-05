@@ -7,7 +7,9 @@ import java.net.URL;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.WeakHashMap;
 
 import org.identityconnectors.common.logging.Log;
 import org.identityconnectors.framework.common.exceptions.ConfigurationException;
@@ -19,6 +21,8 @@ import com.evolveum.polygon.connector.siebel.util.Pair;
 
 import static java.nio.file.Files.exists;
 import static java.nio.file.Files.isDirectory;
+import static java.util.Collections.newSetFromMap;
+import static java.util.Collections.synchronizedSet;
 import static org.identityconnectors.common.StringUtil.isEmpty;
 
 
@@ -34,6 +38,13 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 	static final int DEFAULT_MAX_PAGE_SIZE = 100;
 
     private static final Log LOG = Log.getLog(SiebelConfiguration.class);
+
+    /**
+     * collection of connectors that will be notified whenever the configuration
+     * changes
+     */
+    private final Collection<SiebelConnector> observingConnectors
+            = synchronizedSet(newSetFromMap(new WeakHashMap<SiebelConnector, Boolean>()));
 
     private String wsUrlString = "";
 	private URL    wsUrl = null;
@@ -67,6 +78,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 			wsUrl = null;
 			wsUri = null;
 		}
+
+		notifyObservingConnectors();
     }
 
 	URL getParsedWsUrl() {
@@ -110,6 +123,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
     public void setUsername(final String username) {
         this.username = (username == null) ? null : username.trim();
+
+        notifyObservingConnectors();
     }
 
     @ConfigurationProperty(order = 3,
@@ -124,6 +139,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
     public void setPassword(String password) {
         this.password = password;
+
+        notifyObservingConnectors();
     }
 
 	@ConfigurationProperty(order = 4,
@@ -138,6 +155,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
 	public void setMaxPageSize(int maxPageSize) {
 		this.maxPageSize = maxPageSize;
+
+		notifyObservingConnectors();
 	}
 
 	@ConfigurationProperty(order = 5,
@@ -152,6 +171,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
 	public void setConnectTimeout(int connectTimeout) {
 		this.connectTimeout = connectTimeout;
+
+		notifyObservingConnectors();
 	}
 
 	@ConfigurationProperty(order = 6,
@@ -166,6 +187,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
 	public void setReceiveTimeout(int receiveTimeout) {
 		this.receiveTimeout = receiveTimeout;
+
+		notifyObservingConnectors();
 	}
 
 	@ConfigurationProperty(order = 7,
@@ -178,10 +201,28 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 
 	public void setSoapLogBasedir(final String soapLogBasedir) {
 		soapLogBasedirStr = trimToNull(soapLogBasedir);
+
+		notifyObservingConnectors();
 	}
 
 	Path getSoapLogTargetPath() {
 		return soapLogBasedir;
+	}
+
+	void addObservingConnector(final SiebelConnector connector) {
+		observingConnectors.add(connector);
+	}
+
+	void removeObservingConnector(final SiebelConnector connector) {
+		observingConnectors.remove(connector);
+	}
+
+	private void notifyObservingConnectors() {
+		final SiebelConnector[] connectors
+				= observingConnectors.toArray(new SiebelConnector[0]);
+		for (SiebelConnector connector : connectors) {
+			connector.configurationChanged();
+		}
 	}
 
 	@Override
@@ -193,6 +234,7 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 		password = null;
 		soapLogBasedir = null;
 		soapLogBasedirStr = null;
+		observingConnectors.clear();
 	}
 
     @Override

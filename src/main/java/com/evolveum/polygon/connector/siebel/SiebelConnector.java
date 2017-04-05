@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
@@ -277,6 +278,12 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	private final Map<Filter.Mode, Pair<SWIEmployeeServicesQueryPageInput, Employee>> queryInputPrototypes
 			= new EnumMap<>(Filter.Mode.class);
 
+	/**
+	 * flag indicating that the configuration has changed since the last
+	 * call of test()
+	 */
+	private final AtomicBoolean configurationChanged = new AtomicBoolean();
+
 	private SoapFaultInspector soapFaultInspector;
 
     @Override
@@ -289,10 +296,9 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
         LOG.info("Initializing connector (connecting to the WS)...");
 
         this.configuration = (SiebelConfiguration) configuration;
+        this.configuration.addObservingConnector(this);
 
-		queryService        = createService(SWISpcEmployeeSpcService.class);
-		insertUpdateService = createService(SiebelSpcEmployee.class);
-		setMaxResourcePageSize(this.configuration.getMaxPageSize());
+		initByConfiguration();
 
 		setupQueryInputPrototypes();
 
@@ -302,6 +308,28 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 			throw new RuntimeException(ex);
 		}
     }
+
+	/**
+	 * Called by the configuration object when any of its attributes changes.
+	 */
+	void configurationChanged() {
+		LOG.ok("configurationChanged()");
+		configurationChanged.set(true);
+	}
+
+	private void reinitByConfiguration() {
+		LOG.info("The connector is being re-initialized.");
+		closeWsClient(insertUpdateService);
+		closeWsClient(queryService);
+
+		initByConfiguration();
+	}
+
+	private void initByConfiguration() {
+		queryService        = createService(SWISpcEmployeeSpcService.class);
+		insertUpdateService = createService(SiebelSpcEmployee.class);
+		setMaxResourcePageSize(configuration.getMaxPageSize());
+	}
 
 	private void setMaxResourcePageSize(final int maxResourcePageSize) {
 		this.maxResourcePageSize = maxResourcePageSize;
@@ -417,6 +445,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		maxResourcePageSizeStr = null;
 		maxResourcePageSize = -1;
 		queryInputPrototypes.clear();
+		configuration.removeObservingConnector(this);
         configuration = null;
 		soapFaultInspector = null;
     }
@@ -438,6 +467,11 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	public void test() {
 		LOG.ok("test() ...");
 		configuration.validate();
+		if (configurationChanged.compareAndSet(true, false)) {
+			LOG.ok(" - the configuration has changed - the connector will be "
+			       + "reinitialized before the actual test");
+			reinitByConfiguration();
+		}
 		executeQueryById(TEST_ID);
 		LOG.ok("test() finished successfully");
 	}
