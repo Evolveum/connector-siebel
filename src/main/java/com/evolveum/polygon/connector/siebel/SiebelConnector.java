@@ -437,6 +437,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	@Override
 	public void test() {
 		LOG.ok("test() ...");
+		configuration.validate();
 		executeQueryById(TEST_ID);
 		LOG.ok("test() finished successfully");
 	}
