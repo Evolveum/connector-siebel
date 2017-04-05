@@ -191,6 +191,8 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 		wsUri = null;
 		username = null;
 		password = null;
+		soapLogBasedir = null;
+		soapLogBasedirStr = null;
 	}
 
     @Override
