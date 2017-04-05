@@ -202,6 +202,18 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 	public void setSoapLogBasedir(final String soapLogBasedir) {
 		soapLogBasedirStr = trimToNull(soapLogBasedir);
 
+		if (soapLogBasedirStr == null) {
+			this.soapLogBasedir = null;
+		} else {
+			try {
+				this.soapLogBasedir = Paths.get(soapLogBasedirStr);
+				soapLogBasedirStr = this.soapLogBasedir.toString(); //normalized
+			} catch (InvalidPathException ex) {
+				LOG.info(ex, "The SOAP log basedir is not a valid path.");
+				this.soapLogBasedir = null;
+			}
+		}
+
 		notifyObservingConnectors();
 	}
 
@@ -271,25 +283,20 @@ public class SiebelConfiguration extends AbstractConfiguration implements Statef
 			throw new ConfigurationException("The receive timeout must be positive.");
 		}
 
-		if (soapLogBasedirStr == null) {
-			soapLogBasedir = null;
-		} else {
-			try {
-				soapLogBasedir = Paths.get(soapLogBasedirStr);
-			} catch (InvalidPathException ex) {
+		if (soapLogBasedirStr != null) {
+			if (soapLogBasedir == null) {
 				throw new ConfigurationException("The SOAP log basedir is not a valid path.");
 			}
-			soapLogBasedirStr = soapLogBasedir.toString();
 
 			if (!soapLogBasedir.isAbsolute()) {
-				throw new ConfigurationException("The SOAP log basedir must be an absolute path.");
+				throw new ConfigurationException("The SOAP log basedir is not an absolute path.");
 			}
 
 			if (!isDirectory(soapLogBasedir)) {
 				if (exists(soapLogBasedir)) {
-					throw new ConfigurationException("File \"" + soapLogBasedirStr + "\" already exists and it isn't a directory.");
+					throw new ConfigurationException("The path to the SOAP log basedir (" + soapLogBasedirStr + ") points to an existing file.");
 				}
-				throw new ConfigurationException("Directory \"" + soapLogBasedirStr + "\" doesn't exist.");
+				throw new ConfigurationException("The SOAP log basedir (" + soapLogBasedirStr + ") doesn't exist.");
 			}
 		}
     }
