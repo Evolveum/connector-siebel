@@ -115,9 +115,9 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 
 	private static final String RESOURCE_PROP_VALUE_NO  = "N";
 
-	private static final String REQUEST_LOG_FILENAME = "siebel-soap-request.xml";
+	private static final String REQUEST_LOG_FILENAME = "siebel-soap-requests.xml";
 
-	private static final String RESPONSE_LOG_FILENAME = "siebel-soap-response.xml";
+	private static final String RESPONSE_LOG_FILENAME = "siebel-soap-responses.xml";
 
 	/**
 	 * account Id used when testing the connection
