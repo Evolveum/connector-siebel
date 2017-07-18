@@ -135,8 +135,8 @@
 					<xsd:sequence>
 						<xsd:element name="PageSize" type="xsd:string"/>
 						<xsd:element ref="xsdLocal1:ListOfSwiemployeeio"/>
-						<xsd:element name="ViewMode" minOccurs="0" type="xsd:string"/>
 						<xsd:element name="ExecutionMode" minOccurs="0" type="xsd:string"/>
+						<xsd:element name="ViewMode" minOccurs="0" type="xsd:string"/>
 						<xsd:element name="StartRowNum" type="xsd:string"/>
 					</xsd:sequence>
 				</xsd:complexType>
