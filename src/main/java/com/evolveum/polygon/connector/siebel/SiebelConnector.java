@@ -127,6 +127,11 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 	private static final String TEST_ID = "BFLM_DUMMY_HCHKR";
 
 	/**
+	 * execution mode to be specified in the query for all employees
+	 */
+	private static final String EXECUTION_MODE_FOR_RETURN_ALL = "ForwardOnly";
+
+	/**
 	 * offset passed to the {@code SearchOp} when the first page is requested
 	 */
 	static final int CONNID_SPI_FIRST_PAGE_OFFSET = 1;
@@ -340,6 +345,7 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 		Pair<SWIEmployeeServicesQueryPageInput, Employee> queryInputPrototype;
 
 		queryInputPrototype = createQueryInputPrototype();
+		queryInputPrototype.a.setExecutionMode(EXECUTION_MODE_FOR_RETURN_ALL);
 		queryInputPrototypes.put(Filter.Mode.RETURN_ALL, queryInputPrototype);
 
 		queryInputPrototype = createQueryInputPrototype();
