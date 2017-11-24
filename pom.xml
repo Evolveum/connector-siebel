@@ -100,7 +100,7 @@
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>3.1.8</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>generate-sources</id>
@@ -146,14 +146,14 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>3.1.6</version>
+			<version>3.2.1</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-hc</artifactId>
-			<version>3.1.6</version>
+			<version>3.2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
