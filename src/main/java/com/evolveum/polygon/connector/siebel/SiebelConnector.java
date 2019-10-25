@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 import javax.xml.xpath.XPathExpressionException;
 
+import com.ctc.wstx.exc.WstxIOException;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
@@ -32,6 +34,7 @@ import org.identityconnectors.framework.common.exceptions.InvalidAttributeValueE
 import org.identityconnectors.framework.common.exceptions.InvalidCredentialException;
 import org.identityconnectors.framework.common.exceptions.OperationTimeoutException;
 import org.identityconnectors.framework.common.exceptions.UnknownUidException;
+import org.identityconnectors.framework.common.exceptions.ConnectionFailedException;
 import org.identityconnectors.framework.common.objects.Attribute;
 import org.identityconnectors.framework.common.objects.AttributeInfo;
 import org.identityconnectors.framework.common.objects.AttributeInfoBuilder;
@@ -1186,6 +1189,10 @@ public class SiebelConnector implements PoolableConnector, TestOp, SchemaOp, Sea
 			}
 		} else if (cause instanceof SocketTimeoutException) {
 			throw new OperationTimeoutException(cause.getMessage());
+		} else if (cause instanceof WstxIOException) {
+			if (cause.getCause() != null && (cause.getCause() instanceof UnknownHostException)) {
+				throw new ConnectionFailedException(cause.getCause());
+			}
 		}
 	}
 
